@@ -48,11 +48,18 @@ public class EnemyBehaviour : MonoBehaviour
             // if the enemy is close enough to the player, perform an attack
             if ((controller) && (distance <= 3.0f))
             {
-                //var direction = Vector3.Normalize(player.transform.position - transform.position);
-                //transform.LookAt(player.transform.position - new Vector3(0.0f, 0.5f, 0.0f));
+                LookAtPlayer();
+
                 controller.SetInteger("AnimState", (int)ZombieState.PUNCH);
             }
         }
        
+    }
+
+    void LookAtPlayer()
+    {
+        Vector3 rot = Quaternion.LookRotation(player.transform.position - transform.position).eulerAngles;
+        rot.x = rot.z = 0;
+        transform.rotation = Quaternion.Euler(rot);
     }
 }
