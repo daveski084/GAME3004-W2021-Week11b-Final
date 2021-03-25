@@ -28,7 +28,12 @@ public class EnemyBehaviour : MonoBehaviour
         navMeshAgent = GetComponent<NavMeshAgent>();
         player = FindObjectOfType<PlayerBehaviour>();
         controller = GetComponent<Animator>();
-        controller.SetInteger("AnimState", (int)ZombieState.RUN);
+
+        if (controller)
+        {
+            controller.SetInteger("AnimState", (int)ZombieState.RUN);
+        }
+        
     }
 
     // Update is called once per frame
@@ -37,6 +42,16 @@ public class EnemyBehaviour : MonoBehaviour
         if (player)
         {
             navMeshAgent.SetDestination(player.transform.position);
+
+            var distance = Vector3.Distance(player.transform.position, transform.position);
+
+            // if the enemy is close enough to the player, perform an attack
+            if ((controller) && (distance <= 3.0f))
+            {
+                //var direction = Vector3.Normalize(player.transform.position - transform.position);
+                //transform.LookAt(player.transform.position - new Vector3(0.0f, 0.5f, 0.0f));
+                controller.SetInteger("AnimState", (int)ZombieState.PUNCH);
+            }
         }
        
     }
